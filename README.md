@@ -18,7 +18,7 @@ A lightweight and **user-friendly web app** to **compress and resize images** qu
 ## 🚀 Live Demo
 
 Try it now online:  
-[🔗 Live Demo](https://github.com/sudheer829940/IMAGE-reduce.html.git)  
+[🔗 Live Demo](https://github.com/sudheer829940/index.html.git)  
 *(Replace with your GitHub Pages link)*
 
 ---
