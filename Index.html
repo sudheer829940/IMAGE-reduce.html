@@ -1,24 +1,64 @@
-ratio = Math.min(w/imgEl.width, h/imgEl.height);
-    const iw=imgEl.width*ratio; const ih=imgEl.height*ratio;
-    const x=(w-iw)/2; const y=(h-ih)/2;
-    if(i>0) pdf.addPage();
-    pdf.addImage(imgEl,'JPEG',x,y,iw,ih,undefined,'FAST');
-  }
-  pdf.save(outName.value||'images.pdf');
-}
-function loadImage(url,rotation){
-  return new Promise((res,rej)=>{
-    const img=new Image(); img.onload=()=>{
-      if(rotation%360===0){ res(img); return; }
-      const c=document.createElement('canvas'); const ctx=c.getContext('2d');
-      if(rotation%180!==0){ c.width=img.height; c.height=img.width; } else { c.width=img.width; c.height=img.height; }
-      ctx.translate(c.width/2,c.height/2); ctx.rotate(rotation*Math.PI/180); ctx.drawImage(img,-img.width/2,-img.height/2);
-      const rimg=new Image(); rimg.onload=()=>res(rimg); rimg.src=c.toDataURL('image/png');
-    }; img.onerror=rej; img.src=url;
-  });
-}
-createBtn.addEventListener('click',makePDF);
-</script>
-</body>
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Image to PDF — Modern Landing</title>
 
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="landing">
+    <h1>Image to PDF</h1>
+    <button id="startBtn">Select Images</button>
+    <input type="file" id="fileInput" accept="image/*" multiple style="display:none" />
+  </div>
+
+  <div id="appUI">
+    <div class="card">
+      <section>
+        <label>Preview</label>
+        <div class="preview" id="previewBox"><span>No image selected</span></div>
+        <div class="thumbs" id="thumbs"></div>
+      </section>
+      <aside>
+        <label>Page Size</label>
+        <select id="pageSize">
+          <option value="a4">A4</option>
+          <option value="letter">Letter</option>
+          <option value="custom">Custom</option>
+        </select>
+
+        <div id="customBox" style="display:none;gap:8px;flex-direction:row;display:flex;">
+          <input type="number" id="wPx" placeholder="Width px" />
+          <input type="number" id="hPx" placeholder="Height px" />
+        </div>
+
+        <label>Orientation</label>
+        <select id="orientation">
+          <option>portrait</option>
+          <option>landscape</option>
+        </select>
+
+        <label>Quality (0.1 - 1)</label>
+        <input type="number" id="quality" min="0.1" max="1" step="0.05" value="0.95" />
+
+        <label>PDF File Name</label>
+        <input type="text" id="outName" value="images.pdf" />
+
+        <button id="createBtn" class="btn">Create PDF</button>
+      </aside>
+    </div>
+  </div>
+
+  <!-- jsPDF Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- External JS -->
+  <script src="script.js"></script>
+</body>
 </html>
